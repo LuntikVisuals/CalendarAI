@@ -6,191 +6,98 @@
   <meta name="theme-color" content="#0a0a12">
   <title>Календарь ИИ</title>
   <style>
-    :root {
-      --glass: rgba(255,255,255,0.08);
-      --glass-border: rgba(255,255,255,0.18);
-      --accent: #a78bfa;
-      --accent2: #22d3ee;
-      --text: #f0f0f5;
-    }
+    :root { --glass: rgba(255,255,255,0.1); --border: rgba(255,255,255,0.2); --accent: #a78bfa; --cyan: #22d3ee; }
     *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-      background: linear-gradient(145deg, #0a0a12 0%, #1a1030 50%, #0c1a2e 100%);
-      color:var(--text);
-      height:100dvh;
-      display:flex;
-      flex-direction:column;
-      overflow:hidden;
-    }
-    header{
-      padding:16px 20px;
-      background:var(--glass);
-      backdrop-filter:blur(20px);
-      -webkit-backdrop-filter:blur(20px);
-      border-bottom:1px solid var(--glass-border);
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-    }
-    h1{font-size:20px;font-weight:600;letter-spacing:-0.3px}
-    .content{flex:1;overflow-y:auto;padding:16px;padding-bottom:32px}
-    .calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:20px;}
-    .day{
-      aspect-ratio:1;display:flex;align-items:center;justify-content:center;
-      background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-      border:1px solid var(--glass-border);border-radius:16px;font-size:15px;cursor:pointer;transition:all 0.2s;
-    }
-    .day.today{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;box-shadow:0 8px 24px rgba(167,139,250,0.4);}
-    .day.has-task{box-shadow:inset 0 0 0 2px var(--accent2)}
-    .day.selected{outline:2px solid #fff;outline-offset:2px;}
-    .weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:8px;text-align:center;font-size:12px;color:rgba(255,255,255,0.5);font-weight:500;}
-    .task{background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--glass-border);border-radius:16px;padding:14px 16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
-    .task button{background:none;border:none;color:#f87171;font-size:20px;padding:0 4px}
-    .add-form{display:flex;gap:8px;margin-bottom:16px}
-    .add-form input{flex:1;background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--glass-border);border-radius:24px;padding:14px 18px;color:#fff;font-size:16px;outline:none;}
-    .add-form button{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:14px 18px;border-radius:24px;font-weight:600;box-shadow:0 6px 20px rgba(167,139,250,0.4);}
-    .plan-btn{width:100%;background:linear-gradient(135deg,#22c55e,#06b6d4);color:#fff;border:none;padding:16px;border-radius:16px;font-size:16px;font-weight:600;margin-bottom:16px;box-shadow:0 8px 24px rgba(34,197,94,0.3);}
-    .plan{background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--glass-border);border-radius:16px;padding:18px;white-space:pre-wrap;line-height:1.6;}
-    .holiday{color:#fbbf24;font-size:13px}
-    #selectedDate{font-size:18px;font-weight:600;margin-bottom:12px}
+    body{font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;background:linear-gradient(160deg,#0a0a12,#1a1030,#0c1a2e);color:#f5f5f7;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+    header{padding:14px 16px;background:var(--glass);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+    h1{font-size:18px;font-weight:600}
+    .content{flex:1;overflow-y:auto;padding:12px;padding-bottom:24px}
+    .weekdays{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:11px;color:#888;margin-bottom:6px}
+    .calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:16px}
+    .day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--glass);border:1px solid var(--border);border-radius:12px;font-size:14px}
+    .day.today{background:linear-gradient(135deg,var(--accent),var(--cyan));color:#fff;border:none;font-weight:600}
+    .day.has-task{box-shadow:inset 0 0 0 2px var(--cyan)}
+    .day.selected{outline:2px solid #fff;outline-offset:1px}
+    #selectedDate{font-size:16px;font-weight:600;margin-bottom:10px}
+    .add-form{display:flex;gap:6px;margin-bottom:12px}
+    .add-form input{flex:1;background:var(--glass);border:1px solid var(--border);border-radius:20px;padding:12px 14px;color:#fff;font-size:15px;outline:none}
+    .add-form button{background:linear-gradient(135deg,var(--accent),var(--cyan));color:#fff;border:none;padding:12px 14px;border-radius:20px;font-weight:600}
+    .plan-btn{width:100%;background:linear-gradient(135deg,#22c55e,#06b6d4);color:#fff;border:none;padding:14px;border-radius:14px;font-size:15px;font-weight:600;margin-bottom:12px}
+    .task{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+    .task button{background:none;border:none;color:#f87171;font-size:18px}
+    .plan{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:14px;white-space:pre-wrap;line-height:1.5;font-size:14px}
+    .holiday{color:#fbbf24;font-size:12px}
   </style>
 </head>
 <body>
-  <header>
-    <h1>Календарь ИИ</h1>
-    <div id="dateDisplay"></div>
-  </header>
+  <header><h1>Календарь ИИ</h1><div id="dateDisplay"></div></header>
   <div class="content">
     <div class="weekdays"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div>
     <div class="calendar" id="calendar"></div>
     <div id="dayView">
       <h2 id="selectedDate"></h2>
-      <div class="add-form">
-        <input id="taskInput" placeholder="Добавить задачу...">
-        <button id="addBtn">+</button>
-      </div>
+      <div class="add-form"><input id="taskInput" placeholder="Добавить задачу..."><button id="addBtn">+</button></div>
       <button class="plan-btn" id="planBtn">Спланировать день</button>
       <div id="tasks"></div>
       <div id="plan" class="plan" style="display:none"></div>
     </div>
   </div>
   <script>
-    const holidays = {"01-01":"Новый год","01-07":"Рождество","02-23":"День защитника Отечества","03-08":"Международный женский день","05-01":"Праздник Весны и Труда","05-09":"День Победы","06-12":"День России","11-04":"День народного единства","12-31":"Новый год"};
-    let tasks = JSON.parse(localStorage.getItem("calendar_tasks") || "{}");
-    let selected = new Date();
-    let currentMonth = new Date(selected.getFullYear(), selected.getMonth(), 1);
-    const calendarEl = document.getElementById("calendar");
-    const tasksEl = document.getElementById("tasks");
-    const planEl = document.getElementById("plan");
-    const selectedDateEl = document.getElementById("selectedDate");
-    const dateDisplay = document.getElementById("dateDisplay");
-    const taskInput = document.getElementById("taskInput");
-    function formatDate(d) { return d.toISOString().split("T")[0]; }
-    function renderCalendar() {
-      calendarEl.innerHTML = "";
-      const year = currentMonth.getFullYear(), month = currentMonth.getMonth();
-      const firstDay = new Date(year, month, 1).getDay();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const offset = firstDay === 0 ? 6 : firstDay - 1;
-      dateDisplay.textContent = currentMonth.toLocaleString("ru", { month: "long", year: "numeric" });
-      for (let i = 0; i < offset; i++) calendarEl.appendChild(document.createElement("div"));
-      const today = formatDate(new Date()), sel = formatDate(selected);
-      for (let day = 1; day <= daysInMonth; day++) {
-        const d = new Date(year, month, day), key = formatDate(d);
-        const div = document.createElement("div");
-        div.className = "day"; div.textContent = day;
-        if (key === today) div.classList.add("today");
-        if (key === sel) div.classList.add("selected");
-        if (tasks[key]?.length) div.classList.add("has-task");
-        div.onclick = () => { selected = d; render(); };
+    const holidays={"01-01":"Новый год","01-07":"Рождество","02-23":"День защитника Отечества","03-08":"Международный женский день","05-01":"Праздник Весны и Труда","05-09":"День Победы","06-12":"День России","11-04":"День народного единства","12-31":"Новый год"};
+    let tasks=JSON.parse(localStorage.getItem("calendar_tasks")||"{}");
+    let selected=new Date(), currentMonth=new Date(selected.getFullYear(),selected.getMonth(),1);
+    const calendarEl=document.getElementById("calendar"), tasksEl=document.getElementById("tasks"), planEl=document.getElementById("plan"), selectedDateEl=document.getElementById("selectedDate"), dateDisplay=document.getElementById("dateDisplay"), taskInput=document.getElementById("taskInput");
+    function formatDate(d){return d.toISOString().split("T")[0];}
+    function renderCalendar(){
+      calendarEl.innerHTML="";
+      const y=currentMonth.getFullYear(), m=currentMonth.getMonth();
+      const first=new Date(y,m,1).getDay(), days=new Date(y,m+1,0).getDate(), off=first===0?6:first-1;
+      dateDisplay.textContent=currentMonth.toLocaleString("ru",{month:"long",year:"numeric"});
+      for(let i=0;i<off;i++) calendarEl.appendChild(document.createElement("div"));
+      const today=formatDate(new Date()), sel=formatDate(selected);
+      for(let d=1;d<=days;d++){
+        const dt=new Date(y,m,d), k=formatDate(dt), div=document.createElement("div");
+        div.className="day"; div.textContent=d;
+        if(k===today) div.classList.add("today");
+        if(k===sel) div.classList.add("selected");
+        if(tasks[k]?.length) div.classList.add("has-task");
+        div.onclick=()=>{selected=dt;render();};
         calendarEl.appendChild(div);
       }
     }
-    function renderTasks() {
-      const key = formatDate(selected);
-      selectedDateEl.textContent = selected.toLocaleDateString("ru", { weekday: "long", day: "numeric", month: "long" });
-      const md = (selected.getMonth()+1).toString().padStart(2,"0") + "-" + selected.getDate().toString().padStart(2,"0");
-      if (holidays[md]) selectedDateEl.innerHTML += ` <span class="holiday">${holidays[md]}</span>`;
-      tasksEl.innerHTML = "";
-      (tasks[key] || []).forEach((t, i) => {
-        const div = document.createElement("div");
-        div.className = "task";
-        div.innerHTML = `<span>${t}</span><button onclick="removeTask('${key}',${i})">×</button>`;
+    function renderTasks(){
+      const k=formatDate(selected);
+      selectedDateEl.textContent=selected.toLocaleDateString("ru",{weekday:"long",day:"numeric",month:"long"});
+      const md=(selected.getMonth()+1).toString().padStart(2,"0")+"-"+selected.getDate().toString().padStart(2,"0");
+      if(holidays[md]) selectedDateEl.innerHTML+=` <span class="holiday">${holidays[md]}</span>`;
+      tasksEl.innerHTML="";
+      (tasks[k]||[]).forEach((t,i)=>{
+        const div=document.createElement("div");
+        div.className="task";
+        div.innerHTML=`<span>${t}</span><button onclick="removeTask('${k}',${i})">×</button>`;
         tasksEl.appendChild(div);
       });
-      planEl.style.display = "none";
+      planEl.style.display="none";
     }
-    function removeTask(key, i) {
-      tasks[key].splice(i, 1);
-      if (!tasks[key].length) delete tasks[key];
-      localStorage.setItem("calendar_tasks", JSON.stringify(tasks));
-      render();
-    }
-    function render() { renderCalendar(); renderTasks(); }
-    document.getElementById("addBtn").onclick = () => {
-      const text = taskInput.value.trim();
-      if (!text) return;
-      const key = formatDate(selected);
-      if (!tasks[key]) tasks[key] = [];
-      tasks[key].push(text);
-      localStorage.setItem("calendar_tasks", JSON.stringify(tasks));
-      taskInput.value = "";
-      render();
+    function removeTask(k,i){tasks[k].splice(i,1); if(!tasks[k].length) delete tasks[k]; localStorage.setItem("calendar_tasks",JSON.stringify(tasks)); render();}
+    function render(){renderCalendar(); renderTasks();}
+    document.getElementById("addBtn").onclick=()=>{
+      const t=taskInput.value.trim(); if(!t) return;
+      const k=formatDate(selected); if(!tasks[k]) tasks[k]=[]; tasks[k].push(t);
+      localStorage.setItem("calendar_tasks",JSON.stringify(tasks)); taskInput.value=""; render();
     };
-    function generatePlan(dayTasks, holiday, date) {
-      const dayName = date.toLocaleDateString("ru", { weekday: "long" });
-      const hour = new Date().getHours();
-      const isWeekend = date.getDay() === 0 || date.getDay() === 6;
-      const intros = [
-        `План на ${dayName}:`,
-        `Сегодня ${dayName}. Вот что получилось:`,
-        `Расклад дня:`,
-        `${dayName} — вот такой план:`
-      ];
-      let plan = intros[Math.floor(Math.random() * intros.length)] + "\n\n";
-      if (holiday) plan += `🎉 Сегодня ${holiday}. Можно чуть расслабиться.\n\n`;
-      if (dayTasks.length === 0) {
-        const free = [
-          "Задач нет. Хороший день, чтобы заняться чем-то своим.",
-          "Свободный день. Можно погулять, почитать или просто отдохнуть.",
-          "Ничего не запланировано. Идеально для спонтанных дел."
-        ];
-        plan += free[Math.floor(Math.random() * free.length)];
-        if (isWeekend) plan += "\n\nВыходной — можно не спешить.";
-        return plan;
-      }
-      plan += "Задачи:\n";
-      dayTasks.forEach((t, i) => plan += `${i+1}. ${t}\n`);
-      const tips = [
-        "\nСначала самое важное, потом остальное.",
-        "\nНе пытайся сделать всё сразу. Разбей на части.",
-        "\nЕсли устанешь — сделай перерыв.",
-        "\nВечером лучше оставить силы на отдых."
-      ];
-      plan += tips[Math.floor(Math.random() * tips.length)];
-      if (dayTasks.length > 4) plan += "\n\nМного дел. Что-то можно перенести.";
-      if (hour >= 18) plan += "\n\nУже вечер. Не затягивай новые дела.";
-      return plan;
-    }
-    document.getElementById("planBtn").onclick = () => {
-      const key = formatDate(selected);
-      const dayTasks = tasks[key] || [];
-      const md = (selected.getMonth()+1).toString().padStart(2,"0") + "-" + selected.getDate().toString().padStart(2,"0");
-      const holiday = holidays[md];
-      planEl.textContent = generatePlan(dayTasks, holiday, selected);
-      planEl.style.display = "block";
+    document.getElementById("planBtn").onclick=()=>{
+      const k=formatDate(selected), ts=tasks[k]||[];
+      const md=(selected.getMonth()+1).toString().padStart(2,"0")+"-"+selected.getDate().toString().padStart(2,"0");
+      let p=`План на ${selected.toLocaleDateString("ru")}:\n\n`;
+      if(holidays[md]) p+=`🎉 Сегодня ${holidays[md]}\n\n`;
+      if(!ts.length) p+="Задач нет. Можно отдохнуть или заняться чем-то своим.";
+      else { p+="Задачи:\n"; ts.forEach((t,i)=>p+=`${i+1}. ${t}\n`); p+="\nСначала важное, потом остальное."; }
+      planEl.textContent=p; planEl.style.display="block";
     };
-    taskInput.onkeydown = e => { if (e.key === "Enter") document.getElementById("addBtn").click(); };
-    let touchStartX = 0;
-    document.addEventListener("touchstart", e => touchStartX = e.touches[0].clientX);
-    document.addEventListener("touchend", e => {
-      const dx = e.changedTouches[0].clientX - touchStartX;
-      if (Math.abs(dx) > 50) {
-        currentMonth.setMonth(currentMonth.getMonth() + (dx > 0 ? -1 : 1));
-        render();
-      }
-    });
+    taskInput.onkeydown=e=>{if(e.key==="Enter") document.getElementById("addBtn").click();};
+    let sx=0; document.addEventListener("touchstart",e=>sx=e.touches[0].clientX);
+    document.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>50){currentMonth.setMonth(currentMonth.getMonth()+(dx>0?-1:1)); render();}});
     render();
   </script>
 </body>
